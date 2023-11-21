@@ -7,12 +7,45 @@
 
 import SwiftUI
 
-struct SettingView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+//MARK: - View Model
+
+@Observable
+final class SettingsViewModel {
+    
+    func logOut() throws {
+        try? AuthenticationManager.shared.signOut()
     }
 }
 
+//MARK: - View
+
+struct SettingView: View {
+    
+    @State private var vm = SettingsViewModel()
+    @Binding var showSignInView: Bool
+    
+    var body: some View {
+        List {
+            Button ("Log Out") {
+                Task {
+                    do {
+                        try vm.logOut()
+                        showSignInView = true
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+        .navigationTitle("Settings")
+    }
+}
+
+//MARK: - Preview
+
 #Preview {
-    SettingView()
+    NavigationStack {
+        SettingView(showSignInView: .constant(false))
+    }
+  
 }
