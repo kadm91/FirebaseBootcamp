@@ -21,7 +21,7 @@ struct FirebaseBootcampApp: App {
         WindowGroup {
          
             RootView()
-           
+          
         }
     }
 }
